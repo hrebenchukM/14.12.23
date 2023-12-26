@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 03</title>
+    <style>
+        .form-group {
+            margin: 12px 4px;
+        }
+
+        .form-group label {
+            display: block;
+        }
+
+        .form-group label.inline {
+            display: inline-block;
+        }
+
+        /* :valid - псевдокласс находит элементы, которые прошли валидацию */
+        input:valid {
+            border: 1px solid green;
+        }
+
+        /* :invalid - псевдокласс находит элементы, которые не прошли валидацию */
+        input:invalid {
+            border: 1px solid red;
+        }
+    </style>
+</head>
+
+<body>
+    <form>
+        <div class="form-group">
+            <label>Имя</label>
+            <input type="text" name="firstNameInput" required>
+        </div>
+        <div class="form-group">
+            <label>Фамилия</label>
+            <input type="text" name="lastNameInput" required>
+        </div>
+        <div class="form-group">
+            <label>Email</label>
+            <input type="email" name="emailInput" required>
+            <div id="emailError" style="color: red;"></div>
+        </div>
+        <div class="form-group">
+            <label>Пароль</label>
+            <input type="password" name="passwordInput" required minlength="6" maxlength="16">
+        </div>
+        <div class="form-group">
+            <label>Подтверждение пароля</label>
+            <input type="password" name="passwordConfirmInput" required minlength="6" maxlength="16">
+            <div id="passwordMatchError" style="color: red;"></div>
+        </div>
+        <div class="form-group">
+            <input type="checkbox" name="acceptedInput" required>
+            <label class="inline">Согласен с условиями использования</label>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Зарегистрироваться">
+        </div>
+    </form>
+
+
+    <script>
+       const form = document.forms[0];
+
+form.addEventListener("submit", function (e) {
+    alert("Форма отправлена");
+});
+
+form.emailInput.addEventListener("input", checkEmailValidity);
+form.passwordInput.addEventListener("input", checkPasswordMatch);
+form.passwordConfirmInput.addEventListener("input", checkPasswordMatch);
+
+/*
+Задание:
+Доработайте валидацию формы. Поле ввода Email не должно содержать значения
+admin@example.com, superuser@example.com и user@example.com
+Во время ввода значений в поле ввода email выполняйте проверку введенного значения и если
+значение совпадает с запрещенным, выводите сообщение об этом рядом с полем ввода.
+Проверку выполняйте на событие input
+*/
+
+function checkEmailValidity() {
+    const emailInput = form.emailInput;
+    const emailError = document.getElementById("emailError");
+
+    const forbiddenEmails = ["admin@example.com", "superuser@example.com", "user@example.com"];
+    if (forbiddenEmails.includes(emailInput.value)) {
+        emailInput.setCustomValidity("Этот email недоступен для регистрации.");
+        emailError.textContent = "Этот email недоступен для регистрации.";
+    } else {
+        emailInput.setCustomValidity("");
+        emailError.textContent = "";
+    }
+}
+
+function checkPasswordMatch() {
+    const passwordInput = form.passwordInput;
+    const passwordConfirmInput = form.passwordConfirmInput;
+    const passwordMatchError = document.getElementById("passwordMatchError");
+
+    if (passwordInput.value !== passwordConfirmInput.value) {
+        passwordInput.setCustomValidity("Пароль и подтверждение пароля не совпадают.");
+        passwordConfirmInput.setCustomValidity("Пароль и подтверждение пароля не совпадают.");
+        passwordMatchError.textContent = "Пароль и подтверждение пароля не совпадают.";
+    } else {
+        passwordInput.setCustomValidity("");
+        passwordConfirmInput.setCustomValidity("");
+        passwordMatchError.textContent = "";
+    }
+}
+
+    </script>
+</body>
+
+</html>

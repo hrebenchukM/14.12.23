@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task 02</title>
+    <style>
+        .form-group {
+            margin: 4px;
+        }
+
+        .form-group label {
+            width: 75px;
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<body>
+    <form>
+        <div class="form-group">
+            <label>Логин</label>
+            <input type="text" name="login">
+            <div id="loginError"></div>
+        </div>
+        <div class="form-group">
+            <label>Пароль</label>
+            <input type="password" name="password">
+            <div id="passwordError"></div>
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="Зарегистрироваться">
+        </div>
+    </form>
+    
+    <script>
+
+
+
+const form = document.forms[0];
+
+form.login.addEventListener("change", function () {
+    validateElement(form.login, "#loginError", /^[a-zA-Z0-9]{4,}$/);
+});
+
+form.password.addEventListener("change", function () {
+    validateElement(form.password, "#passwordError", /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#\$%\^&\*]).{6,}/);
+});
+
+form.addEventListener("submit", function (e) {
+    validateElement(form.login, "#loginError", /^[a-zA-Z0-9]{4,}$/);
+    validateElement(form.password, "#passwordError", /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#\$%\^&\*]).{6,}/);
+
+    let invalidElements = document.querySelectorAll(".invalid");
+    if (invalidElements.length > 0) {
+        e.preventDefault();
+    } else {
+        alert("Форма отправлена");
+    }
+});
+
+function validateElement(element, errorElementSelector, regex) {
+    let errorElement = document.querySelector(errorElementSelector);
+    element.classList.remove("valid");
+    element.classList.remove("invalid");
+    errorElement.textContent = "";
+
+    if (element.value.length > 0) {
+        if (regex && !regex.test(element.value)) {
+            element.classList.add("invalid");
+            errorElement.textContent = "Некорректное значение";
+        } else {
+            element.classList.add("valid");
+        }
+    } else {
+        element.classList.add("invalid");
+        errorElement.textContent = "Обязательное поле";
+    }
+}
+        /*
+        Задание:
+        Добавьте валидацию формы:
+        Поле ввода логина обязательное и должно содержать не менее 4 символов
+        Поле ввода пароля должно содержать строковое значение, состоящие не менее чем из 6 символов букв в нижнем и верхнем 
+        регистре, цифры и спец символа.
+
+        Проверку нужно организовать с помощью встроенной валидации.
+        Регулярное выражение для проверки пароля - (?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#\$%\^&\*]).{6,}
+        */
+
+
+   
+
+    </script>
+</body>
+
+</html>
